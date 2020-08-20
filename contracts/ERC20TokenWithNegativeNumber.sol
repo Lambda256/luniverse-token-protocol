@@ -11,6 +11,7 @@ contract ERC20TokenWithNegativeNumber is Ownable, Pausable{
   string private _symbol;
   int256 private _totalSupply;
   uint8 private _decimals;
+  mapping(address => bool) _administrators;
 
   mapping(address => int256) _balances;
   mapping(address => mapping (address => int256)) private _allowances;
@@ -21,6 +22,15 @@ contract ERC20TokenWithNegativeNumber is Ownable, Pausable{
   event Burn(address indexed from, int256 value);
   event Recover(address indexed from, address indexed to, int256 value);
 
+  modifier onlyAdministrators () {
+    require(isAdministrator());
+    _;
+  }
+
+  function isAdministrator() public view returns (bool) {
+      return msg.sender == owner || _administrators[msg.sender];
+  }
+
   constructor(string name, string symbol, uint8 decimals, int256 initialSupply) public {
     _name = name;
     _symbol = symbol;
@@ -30,6 +40,14 @@ contract ERC20TokenWithNegativeNumber is Ownable, Pausable{
     _totalSupply = initialSupply;
     emit Transfer(address(0), msg.sender, initialSupply);
     emit Mint(msg.sender, initialSupply);
+  }
+  
+  function setAdministrator(address _administrator) onlyOwner whenNotPaused public {
+    _administrators[_administrator] = true;
+  }
+  
+  function unsetAdministrator(address _administrator) onlyOwner whenNotPaused public {
+    _administrators[_administrator] = false;
   }
 
   /**
@@ -237,7 +255,7 @@ contract ERC20TokenWithNegativeNumber is Ownable, Pausable{
     _burn(account, value);
   }
 
-  function recover(address from, int256 value) onlyOwner whenNotPaused public {
+  function recover(address from, int256 value) onlyAdministrators whenNotPaused public {
     _recover(from, msg.sender, value);
   }
 
