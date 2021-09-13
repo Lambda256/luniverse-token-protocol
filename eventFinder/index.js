@@ -43,6 +43,8 @@ async function fetchSidechainRedeemEventStatus({
     event.confirmedBlockNumber = '';
     event.confirmedTxHash = '';
     event.confirmedRedeemId = '';
+    event.duplicatedCount = 0;
+    event.duplicatedRedeemId = '';
   });
   /* eslint-enable no-param-reassign */
 
@@ -60,6 +62,18 @@ async function fetchSidechainRedeemEventStatus({
       }
     }
   });
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < redeemEvents.length - 1; i++) {
+    // eslint-disable-next-line no-plusplus
+    for (let j = i + 1; j < redeemEvents.length; j++) {
+      if (redeemEvents[i].owner === redeemEvents[j].owner && redeemEvents[i].amount === redeemEvents[j].amount) {
+        // eslint-disable-next-line operator-assignment
+        redeemEvents[j].duplicatedCount = redeemEvents[j].duplicatedCount + 1;
+        redeemEvents[j].duplicatedRedeemId = redeemEvents[i].redeemId;
+      }
+    }
+  }
 
   return redeemEvents;
 }
@@ -93,6 +107,7 @@ async function main() {
   console.log('mainBridgeBalance', mainBridgeBalance);
   console.log('sideBridgeBalance', sideBridgeBalance);
   console.log('sideTokenTotal', sideTokenTotal);
+  console.log('차액', sideTokenTotal - mainBridgeBalance);
 
   const redeemEvents = await fetchSidechainRedeemEventStatus({
     rpcHttpEndpoint: `http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`,
@@ -131,19 +146,21 @@ async function main() {
     + 'sideTokenId,'
     + 'owner,'
     + 'amount,'
+    + 'duplicatedCount,'
+    + 'duplicatedRedeemId,'
     + 'status\n', 'utf-8');
 
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
     if (withdrawEvent) {
-      fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
     } else {
-      fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
     }
   });
 
   diffWithdrawEvents.forEach((withdrawEvent) => {
-    fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},,,${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,,\n`);
+    fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},,,${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,,,,\n`);
   });
 }
 
