@@ -39,6 +39,7 @@ async function fetchSidechainRedeemEventStatus({
     event.owner = '';
     event.amount = '';
     event.confirmedBlockNumber = '';
+    event.confirmedTxHash = '';
   });
   /* eslint-enable no-param-reassign */
 
@@ -51,6 +52,7 @@ async function fetchSidechainRedeemEventStatus({
         confirmedRedeem.owner = event.owner;
         confirmedRedeem.amount = event.amount;
         confirmedRedeem.confirmedBlockNumber = event.blockNumber;
+        confirmedRedeem.confirmedTxHash = event.txHash;
       }
     }
   });
@@ -102,33 +104,33 @@ async function main() {
   const diffWithdrawEvents = withdrawEvents.filter(withdrawEvent => !redeemEventIds.includes(withdrawEvent.redeemId));
 
 
-  const file = fs.writeFileSync(FILENAME, 'MainTokenWithdrawed, '
-    + 'MainTokenWithdrawedBlockNumber, '
+  const file = fs.writeFileSync(FILENAME, 'mainTxHash,' + 'redeemTxHash,' + 'confirmedRedeemHash,' + 'MainTokenWithdrawed,'
+    + 'MainTokenWithdrawedBlockNumber,'
     + 'redeemId,'
     + 'sideTokenId,'
-    + 'beneficiary, '
-    + 'amountMT, '
-    + 'amountST, '
-    + 'SideTokenRedeemed, '
-    + 'SideTokenRedeemedBlockNumber, '
-    + 'SideTokenConfirmedBlockNumber, '
-    + 'redeemId, '
-    + 'sideTokenId, '
-    + 'owner, '
-    + 'amount, '
+    + 'beneficiary,'
+    + 'amountMT,'
+    + 'amountST,'
+    + 'SideTokenRedeemed,'
+    + 'SideTokenRedeemedBlockNumber,'
+    + 'SideTokenConfirmedBlockNumber,'
+    + 'redeemId,'
+    + 'sideTokenId,'
+    + 'owner,'
+    + 'amount,'
     + 'status\n', 'utf-8');
 
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
     if (withdrawEvent) {
-      fs.appendFileSync(FILENAME, `${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
     } else {
-      fs.appendFileSync(FILENAME, `,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
     }
   });
 
   diffWithdrawEvents.forEach((withdrawEvent) => {
-    fs.appendFileSync(FILENAME, `${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,\n`);
+    fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},,,${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,\n`);
   });
 }
 
