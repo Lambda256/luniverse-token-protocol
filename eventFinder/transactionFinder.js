@@ -35,7 +35,7 @@ const getEventList = async ({
 
   const transactions = await Promise.all(events.map(event => web3.eth.getTransactionReceipt(event.transactionHash)));
 
-  const blocks = await Promise.all(transactions => web3.eth.getBlock(transactions.blockNumber));
+  const blocks = await Promise.all(transactions.map(transaction => web3.eth.getBlock(transaction.blockNumber)));
 
   events = events.map((event) => {
     const txReceipt = _.find(transactions, { transactionHash: event.transactionHash });
