@@ -1,15 +1,42 @@
 const Web3 = require('web3');
 const fs = require('fs');
+const _ = require('lodash');
 
 const getEventList = async ({
-  rpcHttpEndpoint, contractAddress, abiPath, eventName = 'allEvents', fromBlock, toBlock,
+  rpcHttpEndpoint, contractAddress, abiPath, eventName, fromBlock, toBlock,
 }) => {
   const web3 = new Web3(rpcHttpEndpoint);
   const abi = JSON.parse(fs.readFileSync(abiPath, 'utf8').toString());
   const myConstract = new web3.eth.Contract(abi, contractAddress.toLowerCase());
-  const events = await myConstract.getPastEvents(eventName, {
+  let events = await myConstract.getPastEvents(eventName, {
     fromBlock,
     toBlock,
+  });
+
+  const transactions = await Promise.all(events.map(event => web3.eth.getTransactionReceipt(event.transactionHash)));
+
+  events = events.map((event) => {
+    const txReceipt = _.find(transactions, { transactionHash: event.transactionHash });
+    let output = {
+      txHash: event.transactionHash,
+      eventName: event.event,
+      txFrom: txReceipt.from,
+      txTo: txReceipt.to,
+      blockNumber: event.blockNumber,
+    };
+    if (event.returnValues) {
+      const eventSpec = abi.filter(element => element.type === 'event' && element.name === event.event);
+      const eventParams = eventSpec[0].inputs.map(param => param.name);
+
+      const decodedLog = {};
+
+      eventParams.forEach((param) => {
+        decodedLog[param] = event.returnValues[param];
+      });
+      output = Object.assign(output, decodedLog);
+    }
+
+    return output;
   });
 
   return events;
