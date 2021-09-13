@@ -77,16 +77,16 @@ async function main() {
     contractAddress: '0xcc6b7c0dd3cceeb12ebf92f4715b5b2f0f52316d',
     abiPath: `${__dirname}/abis/SideBridgeABI.json`,
     eventName: 'allEvents',
-    fromBlock: 32535800,
-    toBlock: 32843220,
+    fromBlock: 32843220,
+    toBlock: 32535800,
   });
   const withdrawEvents = await fetchMainchainWithdrawEvents({
     rpcHttpEndpoint: 'http://main-rpc.luniverse.com:8545?key=luniverse',
     contractAddress: '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2',
     abiPath: `${__dirname}/abis/MainBridgeABI.json`,
     eventName: 'MainTokenWithdrawed',
-    fromBlock: 70025600,
-    toBlock: 70347100,
+    fromBlock: 70347100,
+    toBlock: 70025600,
   });
 
   const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.id);
