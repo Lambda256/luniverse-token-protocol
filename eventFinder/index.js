@@ -45,7 +45,6 @@ async function fetchSidechainRedeemEventStatus({
     event.confirmedRedeemId = '';
     event.duplicatedCount = 0;
     event.duplicatedRedeemId = '';
-    event.timestamp = '';
   });
   /* eslint-enable no-param-reassign */
 
