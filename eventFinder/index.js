@@ -12,6 +12,8 @@ const MAIN_CHAIN_FROM_BLOCK = process.argv[5];
 const MAIN_CHAIN_TO_BLOCK = process.argv[6];
 const SIDE_BRIDGE_ADDRESS = process.argv[7];
 const MAIN_BRIDGE_ADDRESS = process.argv[8];
+const MAIN_CONTRACT_ADDRESS = process.argv[9];
+const SIDE_CONTRACT_ADDRESS = process.argv[10];
 
 async function fetchSidechainRedeemEventStatus({
   rpcHttpEndpoint,
@@ -84,6 +86,14 @@ async function fetchMainchainWithdrawEvents({
 
 async function main() {
   console.log(FILENAME);
+  const mainBridgeBalance = await txFinder.getBalance('http://main-rpc.luniverse.com:8545?key=luniverse', MAIN_CONTRACT_ADDRESS, MAIN_BRIDGE_ADDRESS);
+  const sideBridgeBalance = await txFinder.getBalance(`http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`, SIDE_CONTRACT_ADDRESS, SIDE_BRIDGE_ADDRESS);
+  const sideTokenTotal = await txFinder.getTotalSupply(`http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`, SIDE_CONTRACT_ADDRESS);
+
+  console.log('mainBridgeBalance', mainBridgeBalance);
+  console.log('sideBridgeBalance', sideBridgeBalance);
+  console.log('sideTokenTotal', sideTokenTotal);
+
   const redeemEvents = await fetchSidechainRedeemEventStatus({
     rpcHttpEndpoint: `http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`,
     contractAddress: SIDE_BRIDGE_ADDRESS,
@@ -122,8 +132,6 @@ async function main() {
     + 'owner,'
     + 'amount,'
     + 'status\n', 'utf-8');
-
-  console.log(redeemEvents);
 
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
