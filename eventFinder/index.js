@@ -30,7 +30,7 @@ async function fetchSidechainRedeemEventStatus({
     toBlock,
   });
 
-  const redeemEvents = allEvents.filter(event => event.name === 'SideTokenRedeemed');
+  const redeemEvents = allEvents.filter(event => event.eventName === 'SideTokenRedeemed');
 
   /* eslint-disable no-param-reassign */
   redeemEvents.forEach((event) => {
@@ -44,7 +44,7 @@ async function fetchSidechainRedeemEventStatus({
   /* eslint-enable no-param-reassign */
 
   allEvents.forEach((event) => {
-    if (event.name === 'SideTokenRedeemConfirmed') {
+    if (event.eventName === 'SideTokenRedeemConfirmed') {
       const confirmedRedeem = _.find(redeemEvents, { redeemId: event.redeemId });
       if (confirmedRedeem) {
         confirmedRedeem.status = 'Done';
@@ -119,6 +119,8 @@ async function main() {
     + 'owner,'
     + 'amount,'
     + 'status\n', 'utf-8');
+
+  console.log(redeemEvents);
 
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
