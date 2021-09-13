@@ -35,14 +35,18 @@ const getEventList = async ({
 
   const transactions = await Promise.all(events.map(event => web3.eth.getTransactionReceipt(event.transactionHash)));
 
+  const blocks = await Promise.all(transactions => web3.eth.getBlock(transactions.blockNumber));
+
   events = events.map((event) => {
     const txReceipt = _.find(transactions, { transactionHash: event.transactionHash });
+    const block = _.find(blocks, { number: txReceipt.blockNumber });
     let output = {
       txHash: event.transactionHash,
       eventName: event.event,
       txFrom: txReceipt.from,
       txTo: txReceipt.to,
       blockNumber: event.blockNumber,
+      timestamp: block.timestamp,
     };
     if (event.returnValues) {
       const eventSpec = abi.filter(element => element.type === 'event' && element.name === event.event);
