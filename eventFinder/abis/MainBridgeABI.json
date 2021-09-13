@@ -2,11 +2,11 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "name",
+    "name": "isMainAdmin",
     "outputs": [
       {
         "name": "",
-        "type": "string"
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -14,73 +14,14 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_spender",
-        "type": "address"
-      },
-      {
-        "name": "_value",
-        "type": "uint256"
-      }
-    ],
-    "name": "approve",
-    "outputs": [
-      {
-        "name": "success",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
+    "inputs": [
       {
         "name": "",
-        "type": "uint256"
+        "type": "bytes32"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "name": "_value",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-      {
-        "name": "success",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
+    "name": "changeAuthoritySignedCount",
     "outputs": [
       {
         "name": "",
@@ -95,29 +36,15 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_owner",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
+    "name": "stakes",
     "outputs": [
       {
         "name": "",
-        "type": "string"
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -128,21 +55,52 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_to",
+        "name": "_sideBridge",
         "type": "address"
       },
       {
-        "name": "_value",
+        "name": "_requiredSignatures",
+        "type": "uint256"
+      },
+      {
+        "name": "_authorities",
+        "type": "address[]"
+      }
+    ],
+    "name": "registerSideBridge",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "name": "_amount",
         "type": "uint256"
       }
     ],
-    "name": "transfer",
-    "outputs": [
+    "name": "deposit",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
       {
-        "name": "success",
-        "type": "bool"
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
+    "name": "unstake",
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -151,18 +109,228 @@
     "constant": true,
     "inputs": [
       {
-        "name": "_owner",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "deposits",
+    "outputs": [
+      {
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "name": "sender",
         "type": "address"
       },
       {
-        "name": "_spender",
+        "name": "amountMT",
+        "type": "uint256"
+      },
+      {
+        "name": "amountST",
+        "type": "uint256"
+      },
+      {
+        "name": "confirmedCount",
+        "type": "uint8"
+      },
+      {
+        "name": "confirmed",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "sideBridge",
+    "outputs": [
+      {
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "allowance",
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_beneficiary",
+        "type": "address"
+      },
+      {
+        "name": "_sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ownerDeposit",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "depositId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "confirmDeposit",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_oldAuthority",
+        "type": "address"
+      },
+      {
+        "name": "_newAuthority",
+        "type": "address"
+      }
+    ],
+    "name": "changeAuthorityRequest",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_redeemId",
+        "type": "bytes32"
+      },
+      {
+        "name": "_sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "name": "_beneficiary",
+        "type": "address"
+      },
+      {
+        "name": "_amountST",
+        "type": "uint256"
+      },
+      {
+        "name": "txHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "pauseBridge",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
     "outputs": [
       {
-        "name": "remaining",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isOwner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "name": "_value",
+        "type": "uint256"
+      },
+      {
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "name": "_extraData",
+        "type": "bytes"
+      }
+    ],
+    "name": "receiveApproval",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "authorities",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "chainId",
+    "outputs": [
+      {
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -171,25 +339,579 @@
     "type": "function"
   },
   {
-    "anonymous": false,
+    "constant": false,
     "inputs": [
       {
-        "indexed": true,
-        "name": "_from",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "stake",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_changeId",
+        "type": "bytes32"
+      },
+      {
+        "name": "_oldAuthority",
         "type": "address"
       },
       {
-        "indexed": true,
-        "name": "_to",
+        "name": "_newAuthority",
+        "type": "address"
+      }
+    ],
+    "name": "changeAuthority",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_sideChainId",
+        "type": "uint256"
+      },
+      {
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "name": "_symbol",
+        "type": "string"
+      },
+      {
+        "name": "_conversionRate",
+        "type": "uint256"
+      },
+      {
+        "name": "_conversionRateDecimals",
+        "type": "uint8"
+      }
+    ],
+    "name": "hashSideTokenId",
+    "outputs": [
+      {
+        "name": "sideTokenId",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isPaused",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_sideChainId",
+        "type": "uint256"
+      },
+      {
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "name": "_symbol",
+        "type": "string"
+      },
+      {
+        "name": "_conversionRate",
+        "type": "uint256"
+      },
+      {
+        "name": "_conversionRateDecimals",
+        "type": "uint8"
+      },
+      {
+        "name": "_sideTokenId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "registerSideToken",
+    "outputs": [
+      {
+        "name": "sideTokenId",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "resumeBridge",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "withdraws",
+    "outputs": [
+      {
+        "name": "transactionHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "name": "amountMT",
+        "type": "uint256"
+      },
+      {
+        "name": "amountST",
+        "type": "uint256"
+      },
+      {
+        "name": "signedCount",
+        "type": "uint8"
+      },
+      {
+        "name": "withdrawed",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "sideTokens",
+    "outputs": [
+      {
+        "name": "sideChainId",
+        "type": "uint256"
+      },
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "name": "conversionRate",
+        "type": "uint256"
+      },
+      {
+        "name": "conversionRateDecimals",
+        "type": "uint8"
+      },
+      {
+        "name": "decimals",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_staker",
+        "type": "address"
+      }
+    ],
+    "name": "stakedAmount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "mainAdmin",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      },
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "changeAuthoritySignedHistory",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_chainId",
+        "type": "uint256"
+      },
+      {
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "name": "_mainAdmin",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "depositId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "depositCount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "beneficiary",
         "type": "address"
       },
       {
         "indexed": false,
-        "name": "_value",
+        "name": "amountMT",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "amountST",
         "type": "uint256"
       }
     ],
-    "name": "Transfer",
+    "name": "Deposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "depositId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountMT",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "amountST",
+        "type": "uint256"
+      }
+    ],
+    "name": "DepositConfirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Staked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Unstaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "sideBridge",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "authorities",
+        "type": "address[]"
+      }
+    ],
+    "name": "SideBridgeRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "sideChainId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "conversionRate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "conversionRateDecimals",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "name": "decimals",
+        "type": "uint8"
+      }
+    ],
+    "name": "SideTokenRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "redeemId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "sideTokenId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountMT",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "amountST",
+        "type": "uint256"
+      }
+    ],
+    "name": "MainTokenWithdrawed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "oldAuthority",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "newAuthority",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "changeId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "changeAuthorityCount",
+        "type": "uint8"
+      }
+    ],
+    "name": "AuthorityChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "changeId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "name": "oldAuthority",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "newAuthority",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "changeCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ChangeAuthorityRequest",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "from",
+        "type": "address"
+      }
+    ],
+    "name": "MainBridgePaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "from",
+        "type": "address"
+      }
+    ],
+    "name": "MainBridgeResumed",
     "type": "event"
   },
   {
@@ -197,21 +919,16 @@
     "inputs": [
       {
         "indexed": true,
-        "name": "_owner",
+        "name": "previousOwner",
         "type": "address"
       },
       {
         "indexed": true,
-        "name": "_spender",
+        "name": "newOwner",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "_value",
-        "type": "uint256"
       }
     ],
-    "name": "Approval",
+    "name": "OwnershipTransferred",
     "type": "event"
   }
 ]
