@@ -347,7 +347,7 @@ contract('MainBridge', (accounts) => {
       await mainToken.transfer(accounts[1], DEPOSIT_AMOUNT);
       await mainToken.approve(mainBridge.address, DEPOSIT_AMOUNT, { from: accounts[1] });
 
-      await TestHelper.expectThrow2( mainBridge.ownerDeposit(accounts[1], sideTokenId, DEPOSIT_AMOUNT, { from: accounts[2] }));
+      await TestHelper.expectThrow2(mainBridge.ownerDeposit(accounts[1], sideTokenId, DEPOSIT_AMOUNT, { from: accounts[2] }));
     });
 
     it('should be reverted if bridge is paused and deposit is called', async () => {
@@ -558,6 +558,5 @@ contract('MainBridge', (accounts) => {
         await TestHelper.expectThrow2(pausedBridge.registerSideBridge(sideBridge.address, requiredSignatures, authorities));
       });
     });
-
   });
 });
