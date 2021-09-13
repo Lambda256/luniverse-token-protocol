@@ -79,6 +79,7 @@ async function fetchMainchainWithdrawEvents({
 }
 
 async function main() {
+  console.log(FILENAME);
   const redeemEvents = await fetchSidechainRedeemEventStatus({
     rpcHttpEndpoint: `http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`,
     contractAddress: SIDE_BRIDGE_ADDRESS,
@@ -120,56 +121,14 @@ async function main() {
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
     if (withdrawEvent) {
-      fs.appendFileSync(FILENAME, `${withdrawEvent.eventName}, 
-      ${withdrawEvent.blockNumber}, 
-      ${withdrawEvent.redeemId}, 
-      ${withdrawEvent.sideTokenId}, 
-      ${withdrawEvent.beneficiary}, 
-      ${withdrawEvent.amountMT}, 
-      ${withdrawEvent.amountST}, 
-      ${redeemEvent.eventName}, 
-      ${redeemEvent.blockNumber}, 
-      ${redeemEvent.confirmedBlockNumber}, 
-      ${redeemEvent.redeemId}, 
-      ${redeemEvent.sideTokenId}, 
-      ${redeemEvent.owner},
-      ${redeemEvent.amount}
-      ${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
     } else {
-      fs.appendFileSync(FILENAME, `, 
-      , 
-      , 
-      , 
-      , 
-      , 
-      , 
-      ${redeemEvent.eventName}, 
-      ${redeemEvent.blockNumber}, 
-      ${redeemEvent.confirmedBlockNumber}, 
-      ${redeemEvent.redeemId}, 
-      ${redeemEvent.sideTokenId}, 
-      ${redeemEvent.owner},
-      ${redeemEvent.amount},
-      ${redeemEvent.status}\n`);
+      fs.appendFileSync(FILENAME, `,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.confirmedBlockNumber},${redeemEvent.redeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.status}\n`);
     }
   });
 
   diffWithdrawEvents.forEach((withdrawEvent) => {
-    fs.appendFileSync(FILENAME, `${withdrawEvent.eventName},
-      ${withdrawEvent.blockNumber},
-      ${withdrawEvent.redeemId},
-      ${withdrawEvent.sideTokenId},
-      ${withdrawEvent.beneficiary},
-      ${withdrawEvent.amountMT},
-      ${withdrawEvent.amountST},
-      , 
-      ,
-      , 
-      , 
-      , 
-      ,
-      ,
-      \n`);
+    fs.appendFileSync(FILENAME, `${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,\n`);
   });
 }
 
