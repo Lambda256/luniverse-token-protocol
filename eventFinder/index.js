@@ -5,6 +5,13 @@ const txFinder = require('./transactionFinder');
 const CURRENT_TIME = new Date();
 const FILENAME = `BerryLog-${CURRENT_TIME.getFullYear()}-${CURRENT_TIME.getMonth()}-${CURRENT_TIME.getDay()}|${CURRENT_TIME.getHours()}:${CURRENT_TIME.getMinutes()}.csv`;
 
+const SIDE_CHAIN_ID = process.argv[2];
+const SIDE_CHAIN_FROM_BLOCK = process.argv[3];
+const SIDE_CHAIN_TO_BLOCK = process.argv[4];
+const MAIN_CHAIN_FROM_BLOCK = process.argv[5];
+const MAIN_CHAIN_TO_BLOCK = process.argv[6];
+const SIDE_BRIDGE_ADDRESS = process.argv[7];
+const MAIN_BRIDGE_ADDRESS = process.argv[8];
 
 async function fetchSidechainRedeemEventStatus({
   rpcHttpEndpoint,
@@ -73,20 +80,20 @@ async function fetchMainchainWithdrawEvents({
 
 async function main() {
   const redeemEvents = await fetchSidechainRedeemEventStatus({
-    rpcHttpEndpoint: 'http://baas-rpc.luniverse.io:8545?lChainId=8555924898017198221',
-    contractAddress: '0xcc6b7c0dd3cceeb12ebf92f4715b5b2f0f52316d',
+    rpcHttpEndpoint: `http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`,
+    contractAddress: SIDE_BRIDGE_ADDRESS,
     abiPath: `${__dirname}/abis/SideBridgeABI.json`,
     eventName: 'allEvents',
-    fromBlock: 32843220,
-    toBlock: 32535800,
+    fromBlock: SIDE_CHAIN_FROM_BLOCK,
+    toBlock: SIDE_CHAIN_TO_BLOCK,
   });
   const withdrawEvents = await fetchMainchainWithdrawEvents({
     rpcHttpEndpoint: 'http://main-rpc.luniverse.com:8545?key=luniverse',
-    contractAddress: '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2',
+    contractAddress: MAIN_BRIDGE_ADDRESS,
     abiPath: `${__dirname}/abis/MainBridgeABI.json`,
     eventName: 'MainTokenWithdrawed',
-    fromBlock: 70347100,
-    toBlock: 70025600,
+    fromBlock: MAIN_CHAIN_FROM_BLOCK,
+    toBlock: MAIN_CHAIN_TO_BLOCK,
   });
 
   const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.id);
