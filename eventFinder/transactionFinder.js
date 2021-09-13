@@ -7,7 +7,7 @@ const getBalance = async (rpcHttpEndpoint, contractAddress, tokenOwner) => {
   const abi = JSON.parse(fs.readFileSync(`${__dirname}/abis/ERC20ABI.json`, 'utf8').toString());
   const myConstract = new web3.eth.Contract(abi, contractAddress.toLowerCase());
 
-  const balance = await await myConstract.methods.balanceOf(tokenOwner);
+  const balance = await myConstract.methods.balanceOf(tokenOwner);
 
   return balance;
 };
@@ -17,7 +17,7 @@ const getTotalSupply = async (rpcHttpEndpoint, contractAddress) => {
   const abi = JSON.parse(fs.readFileSync(`${__dirname}/abis/ERC20ABI.json`, 'utf8').toString());
   const myConstract = new web3.eth.Contract(abi, contractAddress.toLowerCase());
 
-  const totalSupply = await await myConstract.methods.totalSupply();
+  const totalSupply = await myConstract.methods.totalSupply();
 
   return totalSupply;
 };
