@@ -41,9 +41,9 @@ async function fetchMainChainDepositEvent({
     event.sideTokenId = '';
     event.confirmedBlockNumber = '';
     event.confirmedTxHash = '';
-    event.confirmedDpositId = '';
+    event.confirmedDepositId = '';
     event.duplicatedCount = 0;
-    event.duplicatedRedeemId = '';
+    event.duplicatedDepositId = '';
     event.amountMT = '';
     event.amountST = '';
   });
@@ -57,7 +57,7 @@ async function fetchMainChainDepositEvent({
         confirmedRedeem.sideTokenId = event.sideTokenId;
         confirmedRedeem.confirmedBlockNumber = event.blockNumber;
         confirmedRedeem.confirmedTxHash = event.txHash;
-        confirmedRedeem.confirmedDpositId = event.depositId;
+        confirmedRedeem.confirmedDepositId = event.depositId;
         confirmedRedeem.confirmedTimestamp = event.timestamp;
         confirmedRedeem.amountMT = event.amountMT;
         confirmedRedeem.amountST = event.amountST;
@@ -130,7 +130,7 @@ async function main() {
 
   const depositEventIds = depositEvents.map(depositEvent => depositEvent.depositId);
 
-  const diffMintedEvents = mintedEvents.filter(mintedEvent => !depositEventIds.includes(mintedEvent.redeemId));
+  const diffMintedEvents = mintedEvents.filter(mintedEvent => !depositEventIds.includes(mintedEvent.depositId));
   console.log('mintedEvents length: ', mintedEvents.length);
   console.log('depositEvents length: ', depositEvents.length);
   console.log('diffMintedEvents length: ', diffMintedEvents.length);
@@ -138,7 +138,7 @@ async function main() {
   const output = [];
 
   depositEvents.forEach((depositEvent) => {
-    const mintedEvent = _.find(mintedEvents, { redeemId: depositEvent.redeemId });
+    const mintedEvent = _.find(mintedEvents, { depositId: depositEvent.depositId });
     if (mintedEvent) {
       output.push({
         SideTxHash: mintedEvent.txHash,
@@ -158,7 +158,7 @@ async function main() {
         DepositConfirmedBlockNumber: depositEvent.confirmedBlockNumber,
         DepositConfirmedTimestamp: depositEvent.confirmedTimestamp,
         DepositId: depositEvent.depositId,
-        ConfirmedDepositId: depositEvent.confirmedRedeemId,
+        ConfirmedDepositId: depositEvent.confirmedDepositId,
         DepositEventSideTokenId: depositEvent.sideTokenId,
         duplicatedCount: depositEvent.duplicatedCount,
         duplicatedDepositId: depositEvent.duplicatedDepositId,
@@ -183,7 +183,7 @@ async function main() {
         DepositConfirmedBlockNumber: depositEvent.confirmedBlockNumber,
         DepositConfirmedTimestamp: depositEvent.confirmedTimestamp,
         DepositId: depositEvent.depositId,
-        ConfirmedDepositId: depositEvent.confirmedRedeemId,
+        ConfirmedDepositId: depositEvent.confirmedDepositId,
         DepositEventSideTokenId: depositEvent.sideTokenId,
         duplicatedCount: depositEvent.duplicatedCount,
         duplicatedDepositId: depositEvent.duplicatedDepositId,
