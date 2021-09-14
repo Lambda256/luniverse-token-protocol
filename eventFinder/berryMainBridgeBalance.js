@@ -390,20 +390,31 @@ async function main() {
   const output = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const addr of swapAdresses) {
-    // eslint-disable-next-line no-await-in-loop
-    const mainBalance = await txFinder.getBalance(
-      'http://main-rpc.luniverse.com:8545?key=luniverse',
-      mainBridgeAddress,
-      addr.toLowerCase(),
-    );
+    let mainBalance = 0;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      mainBalance = await txFinder.getBalance(
+        'http://main-rpc.luniverse.com:8545?key=luniverse',
+        mainBridgeAddress,
+        addr.toLowerCase(),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log('mainBalance: ', mainBalance);
 
-    // eslint-disable-next-line no-await-in-loop
-    const sideBalance = await txFinder.getBalance(
-      `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
-      sideBridgeAddress,
-      addr.toLowerCase(),
-    );
+    let sideBalance = 0;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      sideBalance = await txFinder.getBalance(
+        `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
+        sideBridgeAddress,
+        addr.toLowerCase(),
+      );
+    } catch (error) {
+      console.error(error);
+    }
     console.log('sideBalance: ', sideBalance);
     output.push({
       type: 'swap',
