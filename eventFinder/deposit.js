@@ -44,8 +44,6 @@ async function fetchMainChainDepositEvent({
     event.confirmedDepositId = '';
     event.duplicatedCount = 0;
     event.duplicatedDepositId = '';
-    event.amountMT = '';
-    event.amountST = '';
   });
   /* eslint-enable no-param-reassign */
 
@@ -59,8 +57,6 @@ async function fetchMainChainDepositEvent({
         confirmedRedeem.confirmedTxHash = event.txHash;
         confirmedRedeem.confirmedDepositId = event.depositId;
         confirmedRedeem.confirmedTimestamp = event.timestamp;
-        confirmedRedeem.amountMT = event.amountMT;
-        confirmedRedeem.amountST = event.amountST;
       }
     }
   });
