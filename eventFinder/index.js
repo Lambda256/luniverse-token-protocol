@@ -4,7 +4,7 @@ const _ = require('lodash');
 const txFinder = require('./transactionFinder');
 
 const CURRENT_TIME = new Date();
-const FILENAME = `BerryLog-${CURRENT_TIME.getFullYear()}-${CURRENT_TIME.getMonth() + 1}-${CURRENT_TIME.getDate()}|${CURRENT_TIME.getHours()}:${CURRENT_TIME.getMinutes()}.csv`;
+const FILENAME = `BerryLog_${CURRENT_TIME.getFullYear()}${CURRENT_TIME.getMonth() + 1}${CURRENT_TIME.getDate()}${CURRENT_TIME.getHours()}${CURRENT_TIME.getMinutes()}.csv`;
 
 const SIDE_CHAIN_ID = process.argv[2];
 const SIDE_CHAIN_FROM_BLOCK = process.argv[3];
