@@ -389,14 +389,14 @@ async function main() {
   console.log(FILENAME);
   const output = [];
   // eslint-disable-next-line no-restricted-syntax
-  for (const addr of swapAdresses) {
+  for (const swapAddr of swapAdresses) {
     let mainBalance = 0;
     try {
       // eslint-disable-next-line no-await-in-loop
       mainBalance = await txFinder.getBalance(
         'http://main-rpc.luniverse.com:8545?key=luniverse',
         mainContractAddress,
-        addr.toLowerCase(),
+        swapAddr.toLowerCase(),
       );
     } catch (error) {
       console.error(error);
@@ -408,58 +408,55 @@ async function main() {
       sideBalance = await txFinder.getBalance(
         `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
         sideContractAddress,
-        addr.toLowerCase(),
+        swapAddr.toLowerCase(),
       );
     } catch (error) {
       console.error(error);
     }
     output.push({
       type: 'swap',
-      address: addr,
+      address: swapAddr,
       mainBalance,
       sideBalance,
     });
   }
   // eslint-disable-next-line no-restricted-syntax
-  for (const addr of userAdresses) {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const addr of swapAdresses) {
-      let mainBalance = 0;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        mainBalance = await txFinder.getBalance(
-          'http://main-rpc.luniverse.com:8545?key=luniverse',
-          mainContractAddress,
-          addr.toLowerCase(),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-
-      let sideBalance = 0;
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        sideBalance = await txFinder.getBalance(
-          `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
-          sideContractAddress,
-          addr.toLowerCase(),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-      output.push({
-        type: 'user',
-        address: addr,
-        mainBalance,
-        sideBalance,
-      });
+  for (const userAddr of userAdresses) {
+    let mainBalance = 0;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      mainBalance = await txFinder.getBalance(
+        'http://main-rpc.luniverse.com:8545?key=luniverse',
+        mainContractAddress,
+        userAddr.toLowerCase(),
+      );
+    } catch (error) {
+      console.error(error);
     }
-    const options = {
-      keys: ['type', 'address', 'mainBalance', 'sideBalance'],
-    };
-    const csv = await converter.json2csvAsync(output, options);
-    fs.writeFileSync(`${__dirname}/ouputs/${FILENAME}`, csv);
+
+    let sideBalance = 0;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      sideBalance = await txFinder.getBalance(
+        `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
+        sideContractAddress,
+        userAddr.toLowerCase(),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    output.push({
+      type: 'user',
+      address: userAddr,
+      mainBalance,
+      sideBalance,
+    });
   }
+  const options = {
+    keys: ['type', 'address', 'mainBalance', 'sideBalance'],
+  };
+  const csv = await converter.json2csvAsync(output, options);
+  fs.writeFileSync(`${__dirname}/ouputs/${FILENAME}`, csv);
 }
 
 main()
