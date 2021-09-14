@@ -6,7 +6,7 @@ const CURRENT_TIME = new Date();
 const FILENAME = `BerryAddrBalance_${CURRENT_TIME.getFullYear()}${CURRENT_TIME.getMonth() + 1}${CURRENT_TIME.getDate()}${CURRENT_TIME.getHours()}${CURRENT_TIME.getMinutes()}.csv`;
 
 const BERRY_CHAIN_ID = '8555924898017198221';
-const mainContractAddress = '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2';
+const mainContractAddress = '0x5845D58ffD0b99D17eAa1DdE6B38bAf98a420982';
 const sideContractAddress = '0x05f2a13586B1AE81DAe07E451a0034E8ef1CB0ED';
 const swapAdresses = [
   '0xe702c1cadd421b3193a035716eae2c60e8f21f45',
