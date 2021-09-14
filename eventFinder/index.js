@@ -288,7 +288,7 @@ async function main() {
       if (error) console.error(error);
       console.log('file saved.');
     });
-  }, options);
+  });
 }
 
 main()
