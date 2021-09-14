@@ -6,8 +6,8 @@ const CURRENT_TIME = new Date();
 const FILENAME = `BerryAddrBalance_${CURRENT_TIME.getFullYear()}${CURRENT_TIME.getMonth() + 1}${CURRENT_TIME.getDate()}${CURRENT_TIME.getHours()}${CURRENT_TIME.getMinutes()}.csv`;
 
 const BERRY_CHAIN_ID = '8555924898017198221';
-const mainBridgeAddress = '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2';
-const sideBridgeAddress = '0xcc6b7c0dd3cceeb12ebf92f4715b5b2f0f52316d';
+const mainContractAddress = '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2';
+const sideContractAddress = '0x05f2a13586B1AE81DAe07E451a0034E8ef1CB0ED';
 const swapAdresses = [
   '0xe702c1cadd421b3193a035716eae2c60e8f21f45',
   '0x9e9f74aa5b6bc95cccba87c27624f2e75178cfe3',
@@ -395,27 +395,24 @@ async function main() {
       // eslint-disable-next-line no-await-in-loop
       mainBalance = await txFinder.getBalance(
         'http://main-rpc.luniverse.com:8545?key=luniverse',
-        mainBridgeAddress,
+        mainContractAddress,
         addr.toLowerCase(),
       );
     } catch (error) {
       console.error(error);
     }
-
-    console.log('mainBalance: ', mainBalance);
 
     let sideBalance = 0;
     try {
       // eslint-disable-next-line no-await-in-loop
       sideBalance = await txFinder.getBalance(
         `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
-        sideBridgeAddress,
+        sideContractAddress,
         addr.toLowerCase(),
       );
     } catch (error) {
       console.error(error);
     }
-    console.log('sideBalance: ', sideBalance);
     output.push({
       type: 'swap',
       address: addr,
@@ -425,19 +422,31 @@ async function main() {
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const addr of userAdresses) {
-    // eslint-disable-next-line no-await-in-loop
-    const mainBalance = await txFinder.getBalance(
-      'http://main-rpc.luniverse.com:8545?key=luniverse',
-      mainBridgeAddress,
-      addr.toLowerCase(),
-    );
+    // eslint-disable-next-line no-restricted-syntax
+    for (const addr of swapAdresses) {
+      let mainBalance = 0;
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        mainBalance = await txFinder.getBalance(
+          'http://main-rpc.luniverse.com:8545?key=luniverse',
+          mainContractAddress,
+          addr.toLowerCase(),
+        );
+      } catch (error) {
+        console.error(error);
+      }
 
-    // eslint-disable-next-line no-await-in-loop
-    const sideBalance = await txFinder.getBalance(
-      `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
-      sideBridgeAddress,
-      addr.toLowerCase(),
-    );
+      let sideBalance = 0;
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        sideBalance = await txFinder.getBalance(
+          `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
+          sideContractAddress,
+          addr.toLowerCase(),
+        );
+      } catch (error) {
+        console.error(error);
+      }
     output.push({
       type: 'user',
       address: addr,
