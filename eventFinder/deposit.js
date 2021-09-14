@@ -69,7 +69,7 @@ async function fetchMainChainDepositEvent({
   for (let i = 0; i < depositedEvents.length - 1; i++) {
     // eslint-disable-next-line no-plusplus
     for (let j = i + 1; j < depositedEvents.length; j++) {
-      if (depositedEvents[i].owner === depositedEvents[j].owner && depositedEvents[i].amount === depositedEvents[j].amount) {
+      if (depositedEvents[i].beneficiary === depositedEvents[j].beneficiary && depositedEvents[i].amountMT === depositedEvents[j].amountMT) {
         // eslint-disable-next-line operator-assignment
         depositedEvents[j].duplicatedCount = depositedEvents[j].duplicatedCount + 1;
         depositedEvents[j].duplicatedDepositId = depositedEvents[i].depositId;
