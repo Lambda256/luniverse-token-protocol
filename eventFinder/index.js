@@ -129,10 +129,10 @@ async function main() {
 
   const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.redeemId);
 
-  console.log('all: ', withdrawEvents.length);
-  console.log('redeemEventIds: ', redeemEventIds);
   const diffWithdrawEvents = withdrawEvents.filter(withdrawEvent => !redeemEventIds.includes(withdrawEvent.redeemId));
-  console.log('diff: ', diffWithdrawEvents.length);
+  console.log('allWithDrawEvents length: ', withdrawEvents.length);
+  console.log('redeemEvents length: ', redeemEvents.length);
+  console.log('diffWithDrawEvents length: ', diffWithdrawEvents.length);
 
   const output = [];
 
