@@ -15,7 +15,7 @@ describe('transactionFinder', () => {
     });
   });
   describe('getEventList(Deposit, DepositConfirmed, SideTokenMinted)', () => {
-    const SIDE_CHAIN_ID = 8555924898017198221;
+    const SIDE_CHAIN_ID = '8555924898017198221';
     it('If the Deposited, DepositConfirmed event remains, it will be printed.', async () => {
       const targetEventNames = ['Deposited', 'DepositConfirmed'];
       const events = await subject.getEventList({
