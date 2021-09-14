@@ -127,7 +127,7 @@ async function main() {
     toBlock: MAIN_CHAIN_TO_BLOCK,
   });
 
-  const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.id);
+  const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.redeemId);
 
   console.log('all: ', withdrawEvents.length);
   console.log('redeemEventIds: ', redeemEventIds);
