@@ -282,7 +282,11 @@ async function main() {
     ],
   };
   json2csv.json2csv(output, (err, csv) => {
-    fs.writeFileSync(FILENAME, csv);
+    if (err) console.error(err);
+    fs.writeFile(FILENAME, csv, (error) => {
+      if (error) console.error(error);
+      console.log('file saved.');
+    });
   }, options);
 }
 
