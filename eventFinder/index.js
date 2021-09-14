@@ -1,4 +1,5 @@
 const fs = require('fs');
+const json2csv = require('json-2-csv');
 const _ = require('lodash');
 const txFinder = require('./transactionFinder');
 
@@ -136,32 +137,32 @@ async function main() {
 
   const output = [];
 
-  const file = fs.writeFileSync(FILENAME, 'mainTxHash,' + 'redeemTxHash,' + 'confirmedRedeemHash,' + 'MainTokenWithdrawed,'
-    + 'MainTokenWithdrawedBlockNumber,'
-    + 'mainTimestamp,'
-    + 'mainEedeemId,'
-    + 'sideTokenId,'
-    + 'beneficiary,'
-    + 'amountMT,'
-    + 'amountST,'
-    + 'SideTokenRedeemed,'
-    + 'SideTokenRedeemedBlockNumber,'
-    + 'sideRedeemedTimestamp,'
-    + 'SideTokenConfirmedBlockNumber,'
-    + 'sideConfirmedTimestamp,'
-    + 'redeemId,'
-    + 'ConfirmedRedeemId,'
-    + 'sideTokenId,'
-    + 'owner,'
-    + 'amount,'
-    + 'duplicatedCount,'
-    + 'duplicatedRedeemId,'
-    + 'status\n', 'utf-8');
+  // const file = fs.writeFileSync(FILENAME, 'mainTxHash,' + 'redeemTxHash,' + 'confirmedRedeemHash,' + 'MainTokenWithdrawed,'
+  //   + 'MainTokenWithdrawedBlockNumber,'
+  //   + 'mainTimestamp,'
+  //   + 'mainEedeemId,'
+  //   + 'sideTokenId,'
+  //   + 'beneficiary,'
+  //   + 'amountMT,'
+  //   + 'amountST,'
+  //   + 'SideTokenRedeemed,'
+  //   + 'SideTokenRedeemedBlockNumber,'
+  //   + 'sideRedeemedTimestamp,'
+  //   + 'SideTokenConfirmedBlockNumber,'
+  //   + 'sideConfirmedTimestamp,'
+  //   + 'redeemId,'
+  //   + 'ConfirmedRedeemId,'
+  //   + 'sideTokenId,'
+  //   + 'owner,'
+  //   + 'amount,'
+  //   + 'duplicatedCount,'
+  //   + 'duplicatedRedeemId,'
+  //   + 'status\n', 'utf-8');
 
   redeemEvents.forEach((redeemEvent) => {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
     if (withdrawEvent) {
-      fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.timestamp},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
+      // fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.timestamp},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
 
       output.push({
         mainTxHash: withdrawEvent.txHash,
@@ -190,7 +191,7 @@ async function main() {
         status: redeemEvent.status,
       });
     } else {
-      fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
+      // fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
 
       output.push({
         mainTxHash: null,
@@ -222,8 +223,67 @@ async function main() {
   });
 
   diffWithdrawEvents.forEach((withdrawEvent) => {
-    fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},,,${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.timestamp},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,,,,\n`);
+    // fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},,,${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.timestamp},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},,,,,,,,,,,\n`);
+
+    output.push({
+      mainTxHash: withdrawEvent.txHash,
+      redeemTxHash: null,
+      confirmedRedeemHash: null,
+      MainTokenWithdrawed: withdrawEvent.eventName,
+      MainTokenWithdrawedBlockNumber: withdrawEvent.blockNumber,
+      mainTimestamp: withdrawEvent.timestamp,
+      mainEedeemId: withdrawEvent.redeemId,
+      withDrawEventSideTokenId: withdrawEvent.sideTokenId,
+      beneficiary: withdrawEvent.beneficiary,
+      amountMT: withdrawEvent.amountMT,
+      amountST: withdrawEvent.amountST,
+      SideTokenRedeemed: null,
+      SideTokenRedeemedBlockNumber: null,
+      sideRedeemedTimestamp: null,
+      SideTokenConfirmedBlockNumber: null,
+      sideConfirmedTimestamp: null,
+      redeemId: null,
+      ConfirmedRedeemId: null,
+      redeemEventSideTokenId: null,
+      owner: null,
+      amount: null,
+      duplicatedCount: null,
+      duplicatedRedeemId: null,
+      status: null,
+    });
   });
+
+  const options = {
+    keys: [
+      'mainTxHash',
+      'redeemTxHash',
+      'confirmedRedeemHash',
+      'MainTokenWithdrawed',
+      'MainTokenWithdrawedBlockNumber',
+      'mainTimestamp',
+      'mainEedeemId',
+      'withDrawEventSideTokenId',
+      'beneficiary',
+      'amountMT',
+      'amountST',
+      'SideTokenRedeemed',
+      'SideTokenRedeemedBlockNumber',
+      'sideRedeemedTimestamp',
+      'SideTokenConfirmedBlockNumber',
+      'sideConfirmedTimestamp',
+      'redeemId',
+      'ConfirmedRedeemId',
+      'redeemEventSideTokenId',
+      'owner',
+      'amount',
+      'duplicatedCount',
+      'duplicatedRedeemId',
+      'status',
+    ],
+  };
+  json2csv.json2csv(output, (err, csv) => {
+    fs.writeFileSync(FILENAME, csv);
+  }, options);
 }
 
 main()
