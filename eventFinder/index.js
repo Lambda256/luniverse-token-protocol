@@ -281,14 +281,9 @@ async function main() {
       'status',
     ],
   };
-  json2csv.json2csv(output, (err, csv) => {
-    if (err) console.error(err);
-    console.log(csv);
-    fs.writeFile(FILENAME, csv, (error) => {
-      if (error) console.error(error);
-      console.log('file saved.');
-    });
-  });
+  const csv = json2csv.json2csvAsync(output, options);
+  console.log(csv);
+  fs.writeFileSync(FILENAME, csv);
 }
 
 main()
