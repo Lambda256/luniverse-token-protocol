@@ -18,7 +18,7 @@ describe('transactionFinder', () => {
     const SIDE_CHAIN_ID = 8555924898017198221;
     it('If the Deposited, DepositConfirmed event remains, it will be printed.', async () => {
       const targetEventNames = ['Deposited', 'DepositConfirmed'];
-      const events = await subject.EventList({
+      const events = await subject.getEventList({
         rpcHttpEndpoint: 'http://main-rpc.luniverse.com:8545?key=luniverse',
         contractAddress: '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2',
         eventName: 'allEvents',
