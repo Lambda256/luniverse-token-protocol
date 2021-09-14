@@ -447,18 +447,19 @@ async function main() {
       } catch (error) {
         console.error(error);
       }
-    output.push({
-      type: 'user',
-      address: addr,
-      mainBalance,
-      sideBalance,
-    });
+      output.push({
+        type: 'user',
+        address: addr,
+        mainBalance,
+        sideBalance,
+      });
+    }
+    const options = {
+      keys: ['type', 'address', 'mainBalance', 'sideBalance'],
+    };
+    const csv = await converter.json2csvAsync(output, options);
+    fs.writeFileSync(`${__dirname}/ouputs/${FILENAME}`, csv);
   }
-  const options = {
-    keys: ['type', 'address', 'mainBalance', 'sideBalance'],
-  };
-  const csv = await converter.json2csvAsync(output, options);
-  fs.writeFileSync(`${__dirname}/ouputs/${FILENAME}`, csv);
 }
 
 main()
