@@ -396,6 +396,7 @@ async function main() {
       mainBridgeAddress,
       addr.toLowerCase(),
     );
+    console.log('mainBalance: ', mainBalance);
 
     // eslint-disable-next-line no-await-in-loop
     const sideBalance = await txFinder.getBalance(
@@ -403,6 +404,7 @@ async function main() {
       sideBridgeAddress,
       addr.toLowerCase(),
     );
+    console.log('sideBalance: ', sideBalance);
     output.push({
       type: 'swap',
       address: addr,
