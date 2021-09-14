@@ -4,7 +4,7 @@ const _ = require('lodash');
 const txFinder = require('./transactionFinder');
 
 const CURRENT_TIME = new Date();
-const FILENAME = `BerryLog_${CURRENT_TIME.getFullYear()}${CURRENT_TIME.getMonth() + 1}${CURRENT_TIME.getDate()}${CURRENT_TIME.getHours()}${CURRENT_TIME.getMinutes()}.csv`;
+const FILENAME = `BerryDepositLog_${CURRENT_TIME.getFullYear()}${CURRENT_TIME.getMonth() + 1}${CURRENT_TIME.getDate()}${CURRENT_TIME.getHours()}${CURRENT_TIME.getMinutes()}.csv`;
 
 const SIDE_CHAIN_ID = process.argv[2];
 const SIDE_CHAIN_FROM_BLOCK = process.argv[3];
@@ -146,8 +146,8 @@ async function main() {
         SideDepositId: mintedEvent.depositId,
         MintedEventSideTokenId: mintedEvent.sideTokenId,
         beneficiary: mintedEvent.beneficiary,
-        amountMT: mintedEvent.amountMT,
-        amountST: mintedEvent.amountST,
+        amountMT: depositEvent.amountMT,
+        amountST: depositEvent.amountST,
         Deposited: depositEvent.eventName,
         SideTokenDepositedBlockNumber: depositEvent.blockNumber,
         SideTokenDepositedTimestamp: depositEvent.timestamp,
@@ -171,8 +171,8 @@ async function main() {
         SideDepositId: '',
         MintedEventSideTokenId: '',
         beneficiary: '',
-        amountMT: '',
-        amountST: '',
+        amountMT: depositEvent.amountMT,
+        amountST: depositEvent.amountST,
         Deposited: depositEvent.eventName,
         SideTokenDepositedBlockNumber: depositEvent.blockNumber,
         SideTokenDepositedTimestamp: depositEvent.timestamp,
@@ -199,7 +199,7 @@ async function main() {
       SideDepositId: mintedEvent.depositId,
       MintedEventSideTokenId: mintedEvent.sideTokenId,
       beneficiary: mintedEvent.beneficiary,
-      amountMT: mintedEvent.amountMT,
+      amountMT: '',
       amountST: mintedEvent.amountST,
       Deposited: '',
       SideTokenDepositedBlockNumber: '',
