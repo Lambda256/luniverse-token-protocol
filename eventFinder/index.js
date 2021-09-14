@@ -129,8 +129,11 @@ async function main() {
 
   const redeemEventIds = redeemEvents.map(redeemEvent => redeemEvent.id);
 
+  console.log('all: '.withdrawEvents.legth);
   const diffWithdrawEvents = withdrawEvents.filter(withdrawEvent => !redeemEventIds.includes(withdrawEvent.redeemId));
+  console.log('diff: '.diffWithdrawEvents.legth);
 
+  const output = [];
 
   const file = fs.writeFileSync(FILENAME, 'mainTxHash,' + 'redeemTxHash,' + 'confirmedRedeemHash,' + 'MainTokenWithdrawed,'
     + 'MainTokenWithdrawedBlockNumber,'
@@ -158,8 +161,62 @@ async function main() {
     const withdrawEvent = _.find(withdrawEvents, { redeemId: redeemEvent.redeemId });
     if (withdrawEvent) {
       fs.appendFileSync(FILENAME, `${withdrawEvent.txHash},${redeemEvent.txHash},${redeemEvent.confirmedTxHash},${withdrawEvent.eventName},${withdrawEvent.blockNumber},${withdrawEvent.timestamp},${withdrawEvent.redeemId},${withdrawEvent.sideTokenId},${withdrawEvent.beneficiary},${withdrawEvent.amountMT},${withdrawEvent.amountST},${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
+
+      output.push({
+        mainTxHash: withdrawEvent.txHash,
+        redeemTxHash: redeemEvent.txHash,
+        confirmedRedeemHash: redeemEvent.confirmedTxHash,
+        MainTokenWithdrawed: withdrawEvent.eventName,
+        MainTokenWithdrawedBlockNumber: withdrawEvent.blockNumber,
+        mainTimestamp: withdrawEvent.timestamp,
+        mainEedeemId: withdrawEvent.redeemId,
+        withDrawEventSideTokenId: withdrawEvent.sideTokenId,
+        beneficiary: withdrawEvent.beneficiary,
+        amountMT: withdrawEvent.amountMT,
+        amountST: withdrawEvent.amountST,
+        SideTokenRedeemed: redeemEvent.eventName,
+        SideTokenRedeemedBlockNumber: redeemEvent.blockNumber,
+        sideRedeemedTimestamp: redeemEvent.timestamp,
+        SideTokenConfirmedBlockNumber: redeemEvent.confirmedBlockNumber,
+        sideConfirmedTimestamp: redeemEvent.confirmedTimestamp,
+        redeemId: redeemEvent.redeemId,
+        ConfirmedRedeemId: redeemEvent.confirmedRedeemId,
+        redeemEventSideTokenId: redeemEvent.sideTokenId,
+        owner: redeemEvent.owner,
+        amount: redeemEvent.amount,
+        duplicatedCount: redeemEvent.duplicatedCount,
+        duplicatedRedeemId: redeemEvent.duplicatedRedeemId,
+        status: redeemEvent.status,
+      });
     } else {
       fs.appendFileSync(FILENAME, `,${redeemEvent.txHash},${redeemEvent.confirmedTxHash},,,,,,,,,${redeemEvent.eventName},${redeemEvent.blockNumber},${redeemEvent.timestamp},${redeemEvent.confirmedBlockNumber},${redeemEvent.confirmedTimestamp},${redeemEvent.redeemId},${redeemEvent.confirmedRedeemId},${redeemEvent.sideTokenId},${redeemEvent.owner},${redeemEvent.amount},${redeemEvent.duplicatedCount},${redeemEvent.duplicatedRedeemId},${redeemEvent.status}\n`);
+
+      output.push({
+        mainTxHash: null,
+        redeemTxHash: redeemEvent.txHash,
+        confirmedRedeemHash: redeemEvent.confirmedTxHash,
+        MainTokenWithdrawed: null,
+        MainTokenWithdrawedBlockNumber: null,
+        mainTimestamp: null,
+        mainEedeemId: null,
+        withDrawEventSideTokenId: null,
+        beneficiary: null,
+        amountMT: null,
+        amountST: null,
+        SideTokenRedeemed: redeemEvent.eventName,
+        SideTokenRedeemedBlockNumber: redeemEvent.blockNumber,
+        sideRedeemedTimestamp: redeemEvent.timestamp,
+        SideTokenConfirmedBlockNumber: redeemEvent.confirmedBlockNumber,
+        sideConfirmedTimestamp: redeemEvent.confirmedTimestamp,
+        redeemId: redeemEvent.redeemId,
+        ConfirmedRedeemId: redeemEvent.confirmedRedeemId,
+        redeemEventSideTokenId: redeemEvent.sideTokenId,
+        owner: redeemEvent.owner,
+        amount: redeemEvent.amount,
+        duplicatedCount: redeemEvent.duplicatedCount,
+        duplicatedRedeemId: redeemEvent.duplicatedRedeemId,
+        status: redeemEvent.status,
+      });
     }
   });
 
