@@ -281,7 +281,7 @@ async function main() {
       'status',
     ],
   };
-  const csv = json2csv.json2csvAsync(output, options);
+  const csv = await json2csv.json2csvAsync(output, options);
   console.log(csv);
   fs.writeFileSync(FILENAME, csv);
 }
