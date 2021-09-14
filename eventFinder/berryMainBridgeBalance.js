@@ -394,14 +394,14 @@ async function main() {
     const mainBalance = await txFinder.getBalance(
       'http://main-rpc.luniverse.com:8545?key=luniverse',
       mainBridgeAddress,
-      addr,
+      addr.toLowerCase(),
     );
 
     // eslint-disable-next-line no-await-in-loop
     const sideBalance = await txFinder.getBalance(
       `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
       sideBridgeAddress,
-      addr,
+      addr.toLowerCase(),
     );
     output.push({
       type: 'swap',
@@ -416,14 +416,14 @@ async function main() {
     const mainBalance = await txFinder.getBalance(
       'http://main-rpc.luniverse.com:8545?key=luniverse',
       mainBridgeAddress,
-      addr,
+      addr.toLowerCase(),
     );
 
     // eslint-disable-next-line no-await-in-loop
     const sideBalance = await txFinder.getBalance(
       `http://baas-rpc.luniverse.io:8545?lChainId=${BERRY_CHAIN_ID}`,
       sideBridgeAddress,
-      addr,
+      addr.toLowerCase(),
     );
     output.push({
       type: 'user',
