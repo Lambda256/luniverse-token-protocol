@@ -170,7 +170,7 @@ async function main() {
         DepositTxHash: depositEvent.txHash,
         ConfirmedRedeemHash: depositEvent.confirmedTxHash,
         SideTokenMinted: '',
-        SideTokenMintedBlockNumber: mintedEvent.blockNumber,
+        SideTokenMintedBlockNumber: '',
         SideTimestamp: '',
         SideDepositId: '',
         MintedEventSideTokenId: '',
