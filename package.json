@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Lambda256/luniverse-token-protocol#readme",
   "dependencies": {
+    "json-2-csv": "^3.14.4",
     "lodash": "^4.17.21",
     "typescript": "^3.9.3",
     "web3": "1.0.0-beta.35"
