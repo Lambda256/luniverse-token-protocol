@@ -21,6 +21,7 @@ describe('transactionFinder', () => {
       const events = await subject.getEventList({
         rpcHttpEndpoint: 'http://main-rpc.luniverse.com:8545?key=luniverse',
         contractAddress: '0x09abcfa1f6a3c6d6cd6a22d80937cdd81dc43db2',
+        abiPath: `${__dirname}/../eventFinder/abis/MainBridgeABI.json`,
         eventName: 'allEvents',
         fromBlock: 70025600,
         toBlock: 70347100,
@@ -37,6 +38,7 @@ describe('transactionFinder', () => {
       const events = await subject.getEventList({
         rpcHttpEndpoint: `http://baas-rpc.luniverse.io:8545?lChainId=${SIDE_CHAIN_ID}`,
         contractAddress: '0xcc6b7c0dd3cceeb12ebf92f4715b5b2f0f52316d',
+        abiPath: `${__dirname}/../eventFinder/abis/SideBridgeABI.json`,
         eventName: 'SideTokenMinted',
         fromBlock: 32535800,
         toBlock: 32843220,
