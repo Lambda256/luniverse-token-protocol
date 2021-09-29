@@ -1,8 +1,8 @@
 
 const txFinder = require('./transactionFinder');
 
-const CHAIN_ID = '9982245428912137590';
-const contractAddress = '0xfBCDd0384fBC62a18B4Fd350E0628607D68F2c96';
+const CHAIN_ID = '1347141705302352981';
+const contractAddress = '0x22Ca2A0c26c39dc425579798326f45119466eC14';
 
 async function main() {
   let sideTotalSupply = 0;
