@@ -7,7 +7,7 @@ const FILENAME = `ZikTalkAddrBalance_${CURRENT_TIME.getFullYear()}${CURRENT_TIME
 
 const BERRY_CHAIN_ID = '6229593161289272142';
 const mainContractAddress = '0x35def49e4C26AadD2A0734f38F07dc6C7993f764';
-const sideContractAddress = '0xaf29f9efe818e403593a700cc44ca487a2c37d72';
+const sideContractAddress = '0xaF29F9EFE818e403593A700CC44CA487A2C37D72';
 const swapAdresses = [];
 
 const userAdresses = ['0x7a4ec2cce4fe388fdc8634909ab53021fbe29239'];
