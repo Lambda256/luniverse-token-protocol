@@ -17,7 +17,7 @@ async function main() {
   const output = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const swapAddr of swapAdresses) {
-    let mainBalance = 0;
+    let mainBalance = -1;
     try {
       // eslint-disable-next-line no-await-in-loop
       mainBalance = await txFinder.getBalance(
@@ -29,7 +29,7 @@ async function main() {
       console.error(error);
     }
 
-    let sideBalance = 0;
+    let sideBalance = -1;
     try {
       // eslint-disable-next-line no-await-in-loop
       sideBalance = await txFinder.getBalance(
@@ -49,7 +49,7 @@ async function main() {
   }
   // eslint-disable-next-line no-restricted-syntax
   for (const userAddr of userAdresses) {
-    let mainBalance = 0;
+    let mainBalance = -1;
     try {
       // eslint-disable-next-line no-await-in-loop
       mainBalance = await txFinder.getBalance(
@@ -61,7 +61,7 @@ async function main() {
       console.error(error);
     }
 
-    let sideBalance = 0;
+    let sideBalance = -1;
     try {
       // eslint-disable-next-line no-await-in-loop
       sideBalance = await txFinder.getBalance(

@@ -4,10 +4,10 @@ const _ = require('lodash');
 
 const getBalance = async (rpcHttpEndpoint, contractAddress, tokenOwner) => {
   const web3 = new Web3(rpcHttpEndpoint);
-  const abi = JSON.parse(fs.readFileSync(`${__dirname}/abis/ERC20ABI.json`, 'utf8').toString());
-  const myConstract = new web3.eth.Contract(abi, contractAddress.toLowerCase());
-
-  const balance = await myConstract.methods.balanceOf(tokenOwner).call();
+  const contract = fs.readFileSync(`${__dirname}/abis/ERC20ABI.json`, 'utf8').toString();
+  const abi = JSON.parse(contract);
+  const myContract = new web3.eth.Contract(abi, contractAddress.toLowerCase());
+  const balance = await myContract.methods.balanceOf(tokenOwner).call();
 
   return balance;
 };
