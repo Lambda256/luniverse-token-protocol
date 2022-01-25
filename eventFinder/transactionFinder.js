@@ -2,6 +2,11 @@ const Web3 = require('web3');
 const fs = require('fs');
 const _ = require('lodash');
 
+const getCode = async (rpcHttpEndpoint, contractAddress) => {
+  const web3 = new Web3(rpcHttpEndpoint);
+  return web3.eth.getCode(contractAddress.toLowerCase());
+};
+
 const getBalance = async (rpcHttpEndpoint, contractAddress, tokenOwner) => {
   const web3 = new Web3(rpcHttpEndpoint);
   const contract = fs.readFileSync(`${__dirname}/abis/ERC20ABI.json`, 'utf8').toString();
@@ -67,6 +72,7 @@ const getEventList = async ({
 };
 
 module.exports = {
+  getCode,
   getEventList,
   getBalance,
   getTotalSupply,
