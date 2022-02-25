@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity >=0.4.0 <0.6.0;
 
 import "./SafeMath.sol";
 import "./WhitelistAdminRole.sol";
@@ -43,7 +43,7 @@ contract GasDelegationBlacklist is WhitelistAdminRole {
 //    mapping(address => uint256) public gasRefilledTimeMap;
 
     // State (Reference to `_fundOwner`)
-    address private _fundOwner;
+    address payable private _fundOwner;
 
 
     /****************************************************************************************************
@@ -73,7 +73,7 @@ contract GasDelegationBlacklist is WhitelistAdminRole {
      * Constructor
      *
     ****************************************************************************************************/
-    constructor(address fundOwnerAddress) public payable {
+    constructor(address payable fundOwnerAddress) public payable {
         require(fundOwnerAddress != address(0));
 
         // set _fundOwner
@@ -128,7 +128,7 @@ contract GasDelegationBlacklist is WhitelistAdminRole {
         _fundOwner.transfer(address(this).balance);
     }
 
-    function setFundOwner(address newFundOwnerAddress) onlyFundOwner external returns (bool) {
+    function setFundOwner(address payable newFundOwnerAddress) onlyFundOwner external returns (bool) {
         require(newFundOwnerAddress != address(0));
         require(newFundOwnerAddress != _fundOwner);
 

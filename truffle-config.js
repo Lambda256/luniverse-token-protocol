@@ -12,20 +12,21 @@
  *   },
  */
 require('ts-node/register')
+
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
-  plugins: [ "truffle-security" ],
+  plugins: ['truffle-security'],
   compilers: {
     solc: {
-      version: "0.4.24"  // ex:  "0.4.20". (Default: Truffle's installed solc)
-    }
+      version: '0.5.0',
+    },
   },
   networks: {
     development: {
       host: 'localhost',
       port: 7545,
       network_id: '*',
-    }
+    },
   },
 };

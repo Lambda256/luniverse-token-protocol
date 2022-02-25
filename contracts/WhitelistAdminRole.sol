@@ -1,5 +1,4 @@
-pragma solidity ^0.4.24;
-
+pragma solidity ^0.5.0;
 import "./Roles.sol";
 
 /**
@@ -14,7 +13,7 @@ contract WhitelistAdminRole {
 
     Roles.Role private _whitelistAdmins;
 
-    constructor () internal {
+    constructor() internal {
         _addWhitelistAdmin(msg.sender);
     }
 
