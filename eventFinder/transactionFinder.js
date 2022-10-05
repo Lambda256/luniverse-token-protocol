@@ -71,6 +71,25 @@ const getEventList = async ({
   return events;
 };
 
+const getLukBalance = async (rpc, address) => {
+  let result = '0';
+
+  try {
+    const web3 = new Web3(rpc);
+    const isAddr = web3.utils.isAddress(address);
+
+    if (isAddr) {
+      result = await web3.eth.getBalance(address);
+    } else {
+      throw new Error('[Error] address is not valid.');
+    }
+  } catch (error) {
+    throw error;
+  }
+
+  return { amount: result };
+};
+
 module.exports = {
   getCode,
   getEventList,
@@ -118,4 +137,5 @@ module.exports = {
 
     return events;
   },
+  getLukBalance,
 };
