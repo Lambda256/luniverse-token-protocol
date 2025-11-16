@@ -33,7 +33,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^2.0.2",
     "chai-bn": "^0.2.1",
-    "eslint": "^5.16.0",
+    "eslint": "^9.39.1",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.20.2",
     "ganache-cli": "^6.9.1",
